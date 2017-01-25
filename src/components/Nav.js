@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import HomeScreen from './HomeScreen.ios';
+import HomeScreen from './HomeScreen';
 import IntroScreen from './IntroScreen';
 import Title from './Title';
 import SmallText from './SmallText';
@@ -66,7 +66,7 @@ export default class Nav extends Component {
 
     renderTitle(route) {
         return (
-            <Title style={styles.title}>
+            <Title style={styles.title}>WebView
                 {route.title}
             </Title> );
     }

@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: globalStyles.HEADER_TEXT_COLOR,
         backgroundColor: `${globalStyles.BG_COLOR}99`
-        // backgroundColor:'transparent'
     }
 });
 

@@ -10,7 +10,8 @@ import {
     Modal,
     TouchableOpacity,
     RefreshControl,
-    ActivityIndicator
+    ActivityIndicator,
+    WebView
 } from 'react-native';
 import SmallText from './SmallText';
 import NewsItem from './NewsItem';
@@ -49,6 +50,10 @@ export default class NewsFeed extends Component {
                     >
                         <SmallText>Close</SmallText>
                     </TouchableOpacity>
+                    <WebView
+                        scalesPageToFit
+                        source={{uri: this.state.modalUrl}}
+                    />
                 </View>
             </Modal>
         );

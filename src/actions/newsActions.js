@@ -4,7 +4,7 @@
 
 import {LOAD_NEWS, SEARCH_NEWS} from './actionTypes';
 // import mockData from '../../mockData.json';
-import NYT_API_KEY from '../../config/nytApiKey';
+import NYT_API_KEY from '../config/nytApiKey';
 
 export const loadNews = () =>{
     const req = fetch(`https://api.nytimes.com/svc/topstories/v2/technology.json?api-key=${NYT_API_KEY}`);

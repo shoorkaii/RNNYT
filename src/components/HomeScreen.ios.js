@@ -11,10 +11,10 @@ import {
     Vibration,
     StatusBar
 } from 'react-native';
-import NewsFeedContainer from '../news/containers/NewsFeedContainer';
-import SearchContainer from '../news/containers/SearchContainer';
-import Search from '../news/components/Search';
-import * as globalStyles from '../news/styles/global';
+import NewsFeedContainer from '../containers/NewsFeedContainer';
+import SearchContainer from '../containers/SearchContainer';
+import Search from './Search';
+import * as globalStyles from '../styles/global';
 
 export default class HomeScreen extends Component {
 

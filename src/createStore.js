@@ -5,8 +5,8 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
 import createLogger from 'redux-logger';
 import promiseMiddleware from 'redux-promise';
-import newsFeedReducer from './news/reducers/newsFeedReducer';
-import searchTermReducer from './news/reducers/searchTermReducer';
+import newsFeedReducer from './reducers/newsFeedReducer';
+import searchTermReducer from './reducers/searchTermReducer';
 
 const logger = createLogger();
 

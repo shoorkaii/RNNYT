@@ -2,19 +2,19 @@
  * Created by reza on 1/24/17.
  */
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
     TabBarIOS,
     Text,
-    View,
     Alert,
     Vibration,
     StatusBar
 } from 'react-native';
 import NewsFeedContainer from '../containers/NewsFeedContainer';
 import SearchContainer from '../containers/SearchContainer';
-import Search from './Search';
 import * as globalStyles from '../styles/global';
+
+StatusBar.setBarStyle('light-content');
 
 export default class HomeScreen extends Component {
 
@@ -37,6 +37,8 @@ export default class HomeScreen extends Component {
     }
 
     render() {
+
+        const {selectedTab, tab} = this.props;
         return (
             <NewsFeedContainer />
             // <TabBarIOS
@@ -47,29 +49,34 @@ export default class HomeScreen extends Component {
             //     <TabBarIOS.Item
             //         badge={4}
             //         systemIcon={'featured'}
-            //         sleceted={this.state.tab === 'newsFeed'}
-            //         onPress={() => this.setState({tab: 'newsFeed'})}
+            //         sleceted={selectedTab === 'newsFeed'}
+            //         onPress={() => tab('newsFeed')}
             //     >
             //         <NewsFeedContainer />
             //     </TabBarIOS.Item>
             //
             //     <TabBarIOS.Item
             //         systemIcon={'search'}
-            //         sleceted={this.state.tab === 'search'}
-            //         onPress={() => this.setState({tab: 'search'})}
+            //         sleceted={selectedTab === 'search'}
+            //         onPress={() => tab('search')}
             //     >
-            //         <SearchContainer />
+            //         <NewsFeedContainer />
             //     </TabBarIOS.Item>
             //
             //     <TabBarIOS.Item
             //         systemIcon={'bookmarks'}
-            //         sleceted={this.state.tab === 'bookmarks'}
+            //         sleceted={selectedTab === 'bookmarks'}
             //         onPress={() => this.showBookmarkAlert()}
             //     >
-            //         <Text>Bookmarks</Text>
+            //         <NewsFeedContainer />
             //     </TabBarIOS.Item>
             //
             // </TabBarIOS>
         )
     }
 }
+
+HomeScreen.propTypes = {
+    selectedTab: PropTypes.string,
+    tab: PropTypes.func.isRequired
+};

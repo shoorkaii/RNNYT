@@ -11,9 +11,11 @@ import {
     TouchableOpacity,
     RefreshControl,
     ActivityIndicator,
-    WebView
+    WebView,
+    NetInfo
 } from 'react-native';
 import SmallText from './SmallText';
+import AppText from './AppText';
 import NewsItem from './NewsItem';
 import * as globalStyles from '../styles/global';
 
@@ -28,31 +30,42 @@ export default class NewsFeed extends Component {
             dataSource: this.ds.cloneWithRows(props.news),
             initialLoading: true,
             modalVisible: false,
-            refreshing: false
+            refreshing: false,
+            connected: true
         };
         this.renderRow = this.renderRow.bind(this);
         this.onModalOpen = this.onModalOpen.bind(this);
         this.onModalClose = this.onModalClose.bind(this);
         this.refresh = this.refresh.bind(this);
+        this.handleConnectivityChange = this.handleConnectivityChange.bind(this);
+    }
+
+    handleConnectivityChange(isConnected) {
+        this.setState({
+            connected: isConnected
+        });
+        if (isConnected) {
+            this.refresh();
+        }
     }
 
     renderModal() {
         return (
             <Modal
-                visible={this.state.modalVisible}
-                onRequestClose={this.onModalClose}
+                visible={this.props.modal !== undefined}
+                onRequestClose={this.props.onModalClose}
                 animationType="slide"
             >
                 <View style={styles.modalContent}>
                     <TouchableOpacity
-                        onPress={this.onModalClose}
+                        onPress={this.props.onModalClose}
                         style={styles.closeButton}
                     >
                         <SmallText>Close</SmallText>
                     </TouchableOpacity>
                     <WebView
                         scalesPageToFit
-                        source={{uri: this.state.modalUrl}}
+                        source={{uri: this.state.modal}}
                     />
                 </View>
             </Modal>
@@ -76,7 +89,7 @@ export default class NewsFeed extends Component {
         const index = parseInt(rest[1], 10);
         return (
             <NewsItem
-                onPress={() => this.onModalOpen(rowData.url)}
+                onPress={() => this.props.onModalOpen(rowData.url)}
                 style={styles.newsItem}
                 index={index}
                 {...rowData}
@@ -84,7 +97,14 @@ export default class NewsFeed extends Component {
     }
 
     componentWillMount() {
+        NetInfo.isConnected.addEventListener('change',
+            this.handleConnectivityChange);
         this.refresh();
+    }
+
+    componentWillUnmount() {
+        NetInfo.isConnected.removeEventListener('change',
+            this.handleConnectivityChange);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -103,6 +123,19 @@ export default class NewsFeed extends Component {
     render() {
         const {listStyles = globalStyles.COMMON_STYLES.pageContainer, showLoadingSpinner} = this.props;
         const {initialLoading, refreshing, dataSource} = this.state;
+
+        if (!this.state.connected) {
+            return (
+                <View
+                    style={[globalStyles.COMMON_STYLES.pageContainer, styles.loadingContainer]}
+                >
+                    <AppText>
+                        No Connection
+                    </AppText>
+
+                </View>
+            );
+        }
 
         return (
             (initialLoading && showLoadingSpinner
@@ -139,7 +172,10 @@ NewsFeed.prototypes = {
     news: PropTypes.arrayOf(PropTypes.object),
     listStyles: View.propTypes.style,
     loadNews: PropTypes.func,
-    showLoadingSpinner: PropTypes.bool
+    showLoadingSpinner: PropTypes.bool,
+    modal: PropTypes.string,
+    onModalOpen: PropTypes.func.isRequired,
+    onModalClose: PropTypes.func.isRequired
 };
 
 NewsFeed.defaultProps = {

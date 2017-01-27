@@ -41,11 +41,22 @@ export default class Search extends Component {
                     news={this.props.filteredNews}
                     listStyles={{}}
                     showLoadingSpinner={false}
+                    modal={this.props.modal}
+                    onModalOpen={this.props.onModalOpen}
+                    onModalClose={this.props.onModalClose}
                 />
             </View>
         )
     }
 }
+
+Search.propTypes = {
+    filteredNews: PropTypes.arrayOf(PropTypes.object),
+    searchNews: PropTypes.func.isRequired,
+    modal: PropTypes.string,
+    onModalOpen: PropTypes.func.isRequired,
+    onModalClose: PropTypes.func.isRequired
+};
 
 const styles = StyleSheet.create({
     input: {
@@ -64,8 +75,3 @@ const styles = StyleSheet.create({
         marginBottom: 5
     }
 });
-
-Search.propTypes = {
-    filteredNews:PropTypes.arrayOf(PropTypes.object),
-    searchNews:PropTypes.func.isRequired
-}

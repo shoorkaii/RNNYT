@@ -2,51 +2,42 @@
  * Created by reza on 1/25/17.
  */
 
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {
-    Navigator,
-    TouchableOpacity,
+    NavigationExperimental,
     StyleSheet
 } from 'react-native';
-import HomeScreen from './HomeScreen';
-import IntroScreen from './IntroScreen';
-import Title from './Title';
-import SmallText from './SmallText';
 
 import * as globalStyles from '../styles/global';
 
-const HOME_ROUTE = {
-    title: 'RNNYT',
-    component: HomeScreen
-};
-const INTRO_ROUTE = {
-    title: 'Welcome',
-    component: IntroScreen,
-    props: {
-        nextScene: HOME_ROUTE
-    }
-};
+const {Header ,CardStack} = NavigationExperimental;
 
 export default class Nav extends Component {
 
-    renderScene(route, navigator) {
+    constructor(props, context){
+        super(props, context);
+        this.renderScene = this.renderScene.bind(this);
+        this.renderNavigationBar = this.renderNavigationBar.bind(this);
+    }
+
+    renderScene(sceneProps) {
+        const route = sceneProps.scene.route;
         return (
             <route.component
                 {...route.props}
                 navigator={navigator}
+                push={this.props.push}
+                pop={this.props.pop}
             />
         );
     }
 
-    renderNavigationBar() {
+    renderNavigationBar(sceneProps) {
         return (
-            <Navigator.NavigationBar
-                routeMapper={{
-                    leftButton: this.renderLeftButton,
-                    RightButton: () => null,
-                    Title: this.renderTitle
-                }}
-                style={styles.navbar}
+            <Header
+                style={styles.navigationBar}
+                onNavigationBack={this.props.pop}
+                {...sceneProps}
             /> );
     }
 
@@ -73,24 +64,28 @@ export default class Nav extends Component {
 
     render() {
         return (
-            <Navigator
-                intialRoute={INTRO_ROUTE}
+            <CardStack
+                onNavigationBack={this.props.pop}
+                navigationState={this.props.navigation}
                 renderScene={this.renderScene}
-                navigationBar={this.renderNavigationBar()}
+                renderHeader={this.renderNavigationBar}
+                style={styles.cardStack}
             />
         );
     }
 }
 
+Nav.propTypes = {
+    push: PropTypes.func.isRequired,
+    pop: PropTypes.func.isRequired,
+    navigation: PropTypes.objectOf(PropTypes.any)
+};
+
 const styles = StyleSheet.create({
-    navbar: {
-        backgroundColor: globalStyles.MUTED_COLOR
+    cardStack:{
+        flex:1
     },
-    leftButton:{
-        padding:12
-    },
-    title:{
-        padding:8,
+    navigationBar:{
         backgroundColor:globalStyles.MUTED_COLOR
     }
 });

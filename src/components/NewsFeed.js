@@ -12,7 +12,8 @@ import {
     RefreshControl,
     ActivityIndicator,
     WebView,
-    NetInfo
+    NetInfo,
+    Linking
 } from 'react-native';
 import SmallText from './SmallText';
 import AppText from './AppText';
@@ -57,12 +58,19 @@ export default class NewsFeed extends Component {
                 animationType="slide"
             >
                 <View style={styles.modalContent}>
-                    <TouchableOpacity
-                        onPress={this.props.onModalClose}
-                        style={styles.closeButton}
-                    >
-                        <SmallText>Close</SmallText>
-                    </TouchableOpacity>
+                    <View style={styles.modalButton}>
+                        <TouchableOpacity
+                            onPress={this.props.onModalClose}
+                            style={styles.closeButton}
+                        >
+                            <SmallText>Close</SmallText>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => Linking.openURL(this.props.modal)}
+                        >
+                            <SmallText>Open in Browser</SmallText>
+                        </TouchableOpacity>
+                    </View>
                     <WebView
                         scalesPageToFit
                         source={{uri: this.state.modal}}
@@ -90,6 +98,7 @@ export default class NewsFeed extends Component {
         return (
             <NewsItem
                 onPress={() => this.props.onModalOpen(rowData.url)}
+                onBookmark={() => this.props.addBookmark(rowData.url)}
                 style={styles.newsItem}
                 index={index}
                 {...rowData}
@@ -115,8 +124,8 @@ export default class NewsFeed extends Component {
     }
 
     refresh() {
-        if (this.props.loadNews) {
-            this.props.loadNews();
+        if (this.props.load) {
+            this.props.load();
         }
     }
 
@@ -171,11 +180,12 @@ export default class NewsFeed extends Component {
 NewsFeed.prototypes = {
     news: PropTypes.arrayOf(PropTypes.object),
     listStyles: View.propTypes.style,
-    loadNews: PropTypes.func,
+    load: PropTypes.func,
     showLoadingSpinner: PropTypes.bool,
     modal: PropTypes.string,
     onModalOpen: PropTypes.func.isRequired,
-    onModalClose: PropTypes.func.isRequired
+    onModalClose: PropTypes.func.isRequired,
+    addBookmark:PropTypes.func.isRequired
 };
 
 NewsFeed.defaultProps = {
@@ -203,5 +213,11 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         flexDirection: 'row'
+    },
+    modalButton: {
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 });

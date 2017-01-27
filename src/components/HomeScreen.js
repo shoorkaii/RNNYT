@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import NewsFeedContainer from '../containers/NewsFeedContainer';
 import SearchContainer from '../containers/SearchContainer';
+import BookmarksContainer from '../containers/BookmarksContainer';
 import * as globalStyles from '../styles/global';
 
 StatusBar.setBarStyle('light-content');
@@ -50,7 +51,7 @@ export default class HomeScreen extends Component {
             //         badge={4}
             //         systemIcon={'featured'}
             //         sleceted={selectedTab === 'newsFeed'}
-            //         onPress={() => tab('newsFeed')}
+            //         onPress={() => this.props.tab('newsFeed')}
             //     >
             //         <NewsFeedContainer />
             //     </TabBarIOS.Item>
@@ -58,17 +59,17 @@ export default class HomeScreen extends Component {
             //     <TabBarIOS.Item
             //         systemIcon={'search'}
             //         sleceted={selectedTab === 'search'}
-            //         onPress={() => tab('search')}
+            //         onPress={() => this.props.tab('search')}
             //     >
-            //         <NewsFeedContainer />
+            //         <SearchContainer/>
             //     </TabBarIOS.Item>
             //
             //     <TabBarIOS.Item
             //         systemIcon={'bookmarks'}
             //         sleceted={selectedTab === 'bookmarks'}
-            //         onPress={() => this.showBookmarkAlert()}
+            //         onPress={() => this.props.tab('bookmarks')}
             //     >
-            //         <NewsFeedContainer />
+            //         <BookmarksContainer/>
             //     </TabBarIOS.Item>
             //
             // </TabBarIOS>

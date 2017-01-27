@@ -6,6 +6,7 @@ import {createSelector} from 'reselect';
 import {reshapeNewsData, filterNewsBySearchTerm} from '../util/dataTransformations';
 
 const newsSelector = state => state.news;
+const bookmarksSelector = state => state.bookmarks;
 
 const reshapeNewsSelector = createSelector(
     [newsSelector],
@@ -27,4 +28,10 @@ const caseInsensitiveSearchTermSelector = createSelector(
 export const searchNewsSelector = createSelector(
     [reshapeNewsSelector, caseInsensitiveSearchTermSelector],
     filterNewsBySearchTerm
+);
+
+export const bookmarkedNewsSelector = createSelector(
+    [allNewsSelector, bookmarksSelector],
+    (newsItem, bookmarks) => newsItem.filter(newsItem =>
+    bookmarks.indexOf(newsItem.url) > -1)
 );
